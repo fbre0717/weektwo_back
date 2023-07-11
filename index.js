@@ -50,6 +50,8 @@ const FriendSchema = new mongoose.Schema({
 
 const Friend = mongoose.model('friend', FriendSchema);
 
+const MapCount = new Map();
+
 main().catch(err => console.log(err));
 
 async function main() {
@@ -89,6 +91,45 @@ app.post('/signup', async (req, res) => {
       
       const friend = new Friend(friendData);
       await friend.save();
+      
+      MapCount.set(req.body.userId, 0);
+      res.status(200).json({ message: '회원 가입에 성공!' });
+    }
+  } catch (error) {
+    console.error('Error:', error); // 오류 메시지를 콘솔에 출력
+    res.status(500).json({ message: '서버 오류로 인해 회원 가입에 실패하였습니다.' });
+  }
+});
+
+app.post('/kakao_signup', async (req, res) => {
+  try {
+    const existingUser = await User.findOne({ userId: req.body.userId });
+
+    if (existingUser) {
+      res.status(400).json({ message: '!!!!!!이미 존재하는 userId!!!!!' });
+    } else {
+      const user = new User({
+        userId: req.body.userId,
+        username: "none",
+        password : "none"
+      });
+      await user.save();
+      const newProfile = new Profile({
+        userId: req.body.userId,
+        birth: "none",
+        hobby: "none",
+        imageUrl: "none"
+      });
+      await newProfile.save();
+      const friendData = {
+        userId: req.body.userId,
+        friendList: []
+      };
+      
+      const friend = new Friend(friendData);
+      await friend.save();
+      
+      MapCount.set(req.body.userId, 0);
       res.status(200).json({ message: '회원 가입에 성공!' });
     }
   } catch (error) {
@@ -368,7 +409,7 @@ app.post('/show_all_write', async (req, res) => {
     // userId : ""
     // 모든 데이터를 다 json으로 전달
     const allData = await Text.find({userId: req.body.userId}); // Text 모델의 모든 데이터 조회
-    res.json(allData);
+    res.status(200).json({allData});
 
   } catch (error) {
     console.error('Error:', error); // 오류 메시지를 콘솔에 출력
@@ -387,6 +428,8 @@ app.post('/add_friend', async (req, res) => {
       t.friendList.push(req.body.follow); // req.body.follow를 friendList에 추가
       await t.save(); // 변경된 friend 저장
       res.status(200).json({ message: '친구 추가가 완료되었습니다.' });
+      const val = MapCount.get(req.body.follow) + 1;
+      MapCount.set(req.body.follow, val);
     } else {
       res.status(400).json({ message: '그런 user_id가 없습니다' });
     }
@@ -399,8 +442,18 @@ app.post('/add_friend', async (req, res) => {
 // 수정 예정
 app.post('/Get_Followers', async (req, res) => {
   try {
-    const t = await Friend.find({ friendList: res.userId });
-    res.json({t});
+    //res.json(MapCount.size);
+      MapCount.entries().forEach(entry => {
+        console.log(entry[0], entry[1]);
+      });
+    const t = MapCount.has(req.body.userId);
+    if (t) {
+      const val = MapCount.get(req.body.userId);
+      
+      res.json(val);
+    } else {
+      res.json(100);
+    }
   } catch (error) {
     console.error('Error:', error); // 오류 메시지를 콘솔에 출력
     res.status(500).json({ message: '서버 오류로 인해 Get_Followers 에 실패하였습니다.' });

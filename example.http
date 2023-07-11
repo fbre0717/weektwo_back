@@ -39,8 +39,8 @@
 # content-type: application/json
 
 # {
-#     "username": "MinJik",
-#     "userId" : "t1234",
+#     "username": "adore",
+#     "userId" : "mom",
 #     "password" : "Qweasd123" 
 # }
 
@@ -119,8 +119,8 @@
 # content-type: application/json
 
 # {
-#     "userId": "AbraStone",
-#     "follow" : "t1234"
+#     "userId": "t1234",
+#     "follow" : "mom"
 # }
 
 
@@ -149,9 +149,16 @@
 #     "userId": "AbraStone" 
 # }
 
-POST {{server}}Get_Followers/
+# POST {{server}}Get_Followers/
+# content-type: application/json
+
+# {
+#     "userId": "mom" 
+# }
+
+POST {{server}}kakao_signup/
 content-type: application/json
 
 {
-    "userId": "t1234" 
+    "userId": "icp1481" 
 }
