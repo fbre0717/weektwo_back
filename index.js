@@ -69,11 +69,17 @@ app.post('/signup', async (req, res) => {
     const existingUser = await User.findOne({ userId: req.body.userId });
 
     if (existingUser) {
-      res.status(400).json({ message: '이미 존재하는 userId입니다.' });
+      res.status(400).json({ message: '!!!!!!이미 존재하는 userId!!!!!' });
     } else {
-      const user = new User(req.body);
-      await user.save();
-      res.status(200).json({ message: '회원 가입에 성공하였습니다.' });
+      //const user = new User(req.body);
+      //await user.save();
+      const newProfile = new Profile({
+        userId: req.body.userId,
+        birth: "none",
+        hobby: "none"
+      });
+      await newProfile.save()
+      res.status(200).json({ message: '회원 가입에 성공!' });
     }
   } catch (error) {
     console.error('Error:', error); // 오류 메시지를 콘솔에 출력

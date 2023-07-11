@@ -1,0 +1,35 @@
+@server = http://localhost:3000/
+
+# POST {{server}}show_profile/
+# content-type: application/json
+
+# {
+#     "userId": "build__gates2" 
+# }
+
+# POST {{server}}show_profile/
+# content-type: application/json
+
+# {
+#     "userId": "build__gates" 
+# }
+
+# POST {{server}}add_profile/
+# content-type: application/json
+
+# {
+#   "userId": "build__gates",
+#   "birth": "2002-06-17",
+#   "hobby": "Magic"
+# }
+
+
+
+POST {{server}}signup/
+content-type: application/json
+
+{
+    "username": "Seonkyu",
+    "userId" : "build__gates9",
+    "password" : "Qweasd123" 
+}
