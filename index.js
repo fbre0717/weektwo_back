@@ -83,7 +83,7 @@ app.post('/signup', async (req, res) => {
         birth: "none",
         hobby: "none",
         imageUrl: "https://via.placeholder.com/300",
-        username:"none"
+        username:req.body.username
       });
       await newProfile.save();
       const friendData = {
