@@ -25,8 +25,9 @@ UserSchema.methods.comparePassword = async function (inputPassword) {
 const User = mongoose.model('User', UserSchema);
 
 const TextSchema = new mongoose.Schema({
+  userId: String, 
   title: String,
-  content : String,
+  content : String
 });
 
 const Text = mongoose.model('text', TextSchema);
@@ -61,7 +62,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
 app.get('/', async (req, res) => {
-  res.send('Hello World!')
+  res.send('Hello World!');
 })
 
 app.post('/signup', async (req, res) => {
@@ -78,7 +79,14 @@ app.post('/signup', async (req, res) => {
         birth: "none",
         hobby: "none"
       });
-      await newProfile.save()
+      await newProfile.save();
+      const friendData = {
+        userId: req.body.userId,
+        friendList: []
+      };
+      
+      const friend = new Friend(friendData);
+      await friend.save();
       res.status(200).json({ message: '회원 가입에 성공!' });
     }
   } catch (error) {
@@ -116,7 +124,7 @@ app.post('/write', async (req, res) => {
   
   try {
     // 요청된 title로 사용자 찾기
-    const t = await Text.findOne({ title: req.body.title });
+    const t = await Text.findOne({ title: req.body.title, userId: req.body.userId });
 
     if (t) {
       
@@ -241,6 +249,7 @@ app.post('/modify_user', async (req, res) => {
 });
 
 app.post('/modify_text', async (req, res) => {
+  // userId : "" 
   // "title": "",
   // "type" : "title" 또는 'content' 바꾸려는 것
   //   "what": 바꾸려는 내용
@@ -249,7 +258,7 @@ app.post('/modify_text', async (req, res) => {
     // 같은 userId 있나 확인
 
     if (req.body.type == "title") {
-      const t = await Text.findOne({ title: req.body.title });
+      const t = await Text.findOne({userId: req.body.userId, title: req.body.title });
       if (t) {
         if (t.title == req.body.what) {
           res.status(400).json({ message: 'title 수정하려는 내용이 기존의 내용과 같습니다' });    
@@ -262,7 +271,7 @@ app.post('/modify_text', async (req, res) => {
         res.status(400).json({ message: '그런 title이 없어 수정을 할 수 없습니다' });
       }
     } else if (req.body.type == "content") {
-      const t = await Text.findOne({ title: req.body.title });
+      const t = await Text.findOne({userId: req.body.userId, title: req.body.title });
       if (t) {
         if (t.content == req.body.what) {
           res.status(400).json({ message: 'content 수정 내용이 기존의 내용과 같습니다' });    
@@ -285,11 +294,12 @@ app.post('/modify_text', async (req, res) => {
 });
 
 app.post('/delete_text', async (req, res) => {
+  // "userId":
   // "title": 삭제하고자 하는 게시글의 title,
   try {
     // 같은 title 있나 확인
     
-    const result = await Text.deleteOne({ title: req.body.title });
+    const result = await Text.deleteOne({ userId : req.body.userId, title: req.body.title });
 
     if (result.deletedCount > 0) {
       res.status(200).json({ message: '게시글이 성공적으로 삭제되었습니다.' });
@@ -343,15 +353,51 @@ app.post('/add_profile', async (req, res) => {
   }
 });
 
-app.get('/show_all_write', async (req, res) => {
+app.post('/show_all_write', async (req, res) => {
   try {
+    // userId : ""
     // 모든 데이터를 다 json으로 전달
-    const allData = await Text.find(); // Text 모델의 모든 데이터 조회
+    const allData = await Text.find({userId: req.body.userId}); // Text 모델의 모든 데이터 조회
     res.json(allData);
+
   } catch (error) {
     console.error('Error:', error); // 오류 메시지를 콘솔에 출력
     res.status(500).json({ message: '서버 오류로 인해 shaw_all_write에 실패하였습니다.' });
   }
+});
+
+
+app.post('/add_friend', async (req, res) => {
+  // userId : 누가
+  // follow : 누구를
+
+  try {
+    const t = await Friend.findOne({ userId: req.body.userId });
+    if (t) {
+      t.friendList.push(req.body.follow); // req.body.follow를 friendList에 추가
+      await t.save(); // 변경된 friend 저장
+      res.status(200).json({ message: '친구 추가가 완료되었습니다.' });
+    } else {
+      res.status(400).json({ message: '그런 user_id가 없습니다' });
+    }
+  } catch (error) {
+    console.error('Error:', error); // 오류 메시지를 콘솔에 출력
+    res.status(500).json({ message: '서버 오류로 인해 add_friend에 실패하였습니다.' });
+  }
+});
+
+app.post('/Get_Followers', async (req, res) => {
+  try {
+    const t = await Friend.findOne({ userId: req.body.userId });
+    if (t) {
+      res.status(200).json({ message: '팔로워' });
+    } else {
+      res.status(400).json({ message: '그런 user_id가 없습니다' });
+    }
+  } catch (error) {
+    console.error('Error:', error); // 오류 메시지를 콘솔에 출력
+    res.status(500).json({ message: '서버 오류로 인해 add_friend에 실패하였습니다.' });
+  }  
 });
 
 app.listen(port, () => {

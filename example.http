@@ -4,8 +4,9 @@
 # content-type: application/json
 
 # {
-#     "title": "테스트_게시글1",
-#     "content" : "내용입니다 이게 뭐지"
+#     "userId" : "build_gates",
+#     "title": "7월 12일 일기2",
+#     "content" : "한게 없다 하..2"
 # }
 
 # POST {{server}}show_profile/
@@ -37,8 +38,8 @@
 # content-type: application/json
 
 # {
-#     "username": "Seonkyu",
-#     "userId" : "build__gates11",
+#     "username": "MinJik",
+#     "userId" : "t1234",
 #     "password" : "Qweasd123" 
 # }
 
@@ -83,8 +84,10 @@
 # content-type: application/json
 
 # {
-#     "title": "etstd" 
+#     "userId": "build_gates",
+#     "title": "7월 12일 일기2" 
 # }
+
 
 # POST {{server}}delete_profile/
 # content-type: application/json
@@ -102,11 +105,37 @@
 #     "what" : "sk1445adfd"
 # }
 
-POST {{server}}modify_text/
+# POST {{server}}modify_text/
+# content-type: application/json
+
+# {
+#     "title": "없는 제목",
+#     "type" : "content",
+#     "what" : "의미없는 내용"
+# }
+
+# POST {{server}}add_friend/
+# content-type: application/json
+
+# {
+#     "userId": "AbraStone",
+#     "follow" : "t1234"
+# }
+
+
+# POST {{server}}signup/
+# content-type: application/json
+
+# {
+#     "username": "LeeYeRin",
+#     "userId" : "AbraStone",
+#     "password" : "Qweasd123" 
+# }
+
+
+POST {{server}}show_all_write/
 content-type: application/json
 
 {
-    "title": "없는 제목",
-    "type" : "content",
-    "what" : "의미없는 내용"
+    "userId": "build_gates" 
 }
