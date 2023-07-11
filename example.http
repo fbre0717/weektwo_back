@@ -70,14 +70,14 @@
 #     "what": "우와" 
 # }
 
-POST {{server}}modify_text/
-content-type: application/json
+# POST {{server}}modify_text/
+# content-type: application/json
 
-{
-    "title": "7월 11일 일기",
-    "type" : "title",
-    "what": "7월 11일 일기" 
-}
+# {
+#     "title": "7월 11일 일기",
+#     "type" : "title",
+#     "what": "7월 11일 일기" 
+# }
 
 # POST {{server}}delete_text/
 # content-type: application/json
@@ -92,3 +92,21 @@ content-type: application/json
 # {
 #     "userId": "build__gates11" 
 # }
+
+# POST {{server}}modify_user/
+# content-type: application/json
+
+# {
+#     "userId": "build__gates12",
+#     "type" : "password",
+#     "what" : "sk1445adfd"
+# }
+
+POST {{server}}modify_text/
+content-type: application/json
+
+{
+    "title": "없는 제목",
+    "type" : "content",
+    "what" : "의미없는 내용"
+}
