@@ -14,8 +14,6 @@ const UserSchema = new mongoose.Schema({
   password : String
 });
 
-const User = mongoose.model('User', UserSchema);
-
 UserSchema.methods.comparePassword = async function (inputPassword) {
   if(inputPassword == this.password){
     return true;
@@ -23,6 +21,8 @@ UserSchema.methods.comparePassword = async function (inputPassword) {
     return false;
   }
 };
+
+const User = mongoose.model('User', UserSchema);
 
 const TextSchema = new mongoose.Schema({
   title: String,
