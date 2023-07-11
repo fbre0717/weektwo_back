@@ -1,5 +1,13 @@
 @server = http://localhost:3000/
 
+# POST {{server}}write/
+# content-type: application/json
+
+# {
+#     "title": "테스트_게시글1",
+#     "content" : "내용입니다 이게 뭐지"
+# }
+
 # POST {{server}}show_profile/
 # content-type: application/json
 
@@ -44,22 +52,32 @@
 #     "content": "Cube" 
 # }
 
-POST {{server}}modify_profile/
-content-type: application/json
+# POST {{server}}modify_profile/
+# content-type: application/json
 
-{
-    "userId": "build__gates",
-    "type" : "birth",
-    "content": "2002-01-01" 
-}
+# {
+#     "userId": "build__gates",
+#     "type" : "birth",
+#     "content": "2002-01-01" 
+# }
 
 # POST {{server}}modify_text/
 # content-type: application/json
 
 # {
 #     "title": "sfsdfd",
-#     "content": "와우와옹ㅁㅇㄴㅇ" 
+#     "type" : "content",
+#     "what": "우와" 
 # }
+
+POST {{server}}modify_text/
+content-type: application/json
+
+{
+    "title": "7월 11일 일기",
+    "type" : "title",
+    "what": "7월 11일 일기" 
+}
 
 # POST {{server}}delete_text/
 # content-type: application/json

@@ -196,6 +196,46 @@ app.post('/modify_profile', async (req, res) => {
   }
 });
 
+app.post('/modify_text', async (req, res) => {
+  // "title": "",
+  // "type" : "title" 또는 'content' 바꾸려는 것
+  //   "what": 바꾸려는 내용
+  // 같은 형식으로 req
+  try {
+    // 같은 userId 있나 확인
+
+    if (req.body.type == "title") {
+      const t = await Text.findOne({ title: req.body.title });
+      if (t) {
+        if (t.title == req.body.what) {
+          res.status(400).json({ message: 'title 수정하려는 내용이 기존의 내용과 같습니다' });    
+        } else {
+          t.title = req.body.what;
+          await t.save();
+          res.status(200).json({ message: 'title 수정이 정상적으로 완료되었습니다' });
+        }
+      } else {
+        res.status(400).json({ message: '그런 title이 없어 수정을 할 수 없습니다' });
+      }
+    } else if (req.body.type == "content") {
+      const t = await Text.findOne({ title: req.body.title });
+      if (t.content == req.body.what) {
+        res.status(400).json({ message: 'content 수정 내용이 기존의 내용과 같습니다' });    
+      } else {
+        res.status(200).json({ message: 'content 수정이 정상적으로 완료되었습니다' });
+        t.content = req.body.what;
+        await t.save();
+      }
+    } else {
+      res.status(400).json({ message: '그런 type이 없어 수정이 되지 않았습니다' });
+    }
+
+  } catch (error) {
+    console.error('Error:', error); // 오류 메시지를 콘솔에 출력
+    res.status(500).json({ message: '서버 오류로 인해 show_profile에 실패하였습니다.' });
+  }
+});
+
 app.post('/delete_text', async (req, res) => {
   // "title": 삭제하고자 하는 게시글의 title,
   try {
