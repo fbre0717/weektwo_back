@@ -36,7 +36,8 @@ const Text = mongoose.model('text', TextSchema);
 const ProfileSchema = new mongoose.Schema({
   userId: String,
   birth: String,
-  hobby: String
+  hobby: String,
+  imageUrl: String
 });
 
 const Profile = mongoose.model('profile', ProfileSchema);
@@ -77,7 +78,8 @@ app.post('/signup', async (req, res) => {
       const newProfile = new Profile({
         userId: req.body.userId,
         birth: "none",
-        hobby: "none"
+        hobby: "none",
+        imageUrl: "none"
       });
       await newProfile.save();
       const friendData = {
@@ -167,7 +169,7 @@ app.post('/modify_profile', async (req, res) => {
   //   "type" : "hobby",
   //   "content": "2002-06-17"
   // 같은 형식으로 req
-  // type은 "hobby" 이거나 "birth" 둘 중에 하나. 이외에는 수정하지 않고 무시.
+  // type은 "hobby" 이거나 "birth" , "imageUrl" 셋 중에 하나. 이외에는 수정하지 않고 무시.
   try {
     // 같은 userId 있나 확인
     const t = await Profile.findOne({ userId: req.body.userId });
@@ -187,6 +189,14 @@ app.post('/modify_profile', async (req, res) => {
         } else {
           res.status(200).json({ message: 'birth 수정이 정상적으로 완료되었습니다' });
           t.birth = req.body.content;
+          await t.save();
+        }
+      } else if (req.body.type == "imageUrl") {
+        if (t.ImageUrl == req.body.content) {
+          res.status(200).json({ message: 'imageUrl 수정 내용이 기존의 내용과 같습니다' });    
+        } else {
+          res.status(200).json({ message: 'imageUrl 수정이 정상적으로 완료되었습니다' });
+          t.imageUrl = req.body.content;
           await t.save();
         }
       } else {
@@ -344,7 +354,7 @@ app.post('/add_profile', async (req, res) => {
     } else {
       const newProfile = new Profile(req.body);
       await newProfile.save();
-      res.status(400).json({ message: "유저를 추가했습니다" });
+      res.status(200).json({ message: "유저를 추가했습니다" });
     }
     
   } catch (error) {
@@ -386,17 +396,29 @@ app.post('/add_friend', async (req, res) => {
   }
 });
 
+// 수정 예정
 app.post('/Get_Followers', async (req, res) => {
+  try {
+    const t = await Friend.find({ friendList: res.userId });
+    res.json({t});
+  } catch (error) {
+    console.error('Error:', error); // 오류 메시지를 콘솔에 출력
+    res.status(500).json({ message: '서버 오류로 인해 Get_Followers 에 실패하였습니다.' });
+  }  
+});
+
+app.post('/Get_Following', async (req, res) => {
   try {
     const t = await Friend.findOne({ userId: req.body.userId });
     if (t) {
-      res.status(200).json({ message: '팔로워' });
+      res.json(t.friendList.length);
+      //res.status(200).json({ message: '팔로워' });
     } else {
       res.status(400).json({ message: '그런 user_id가 없습니다' });
     }
   } catch (error) {
     console.error('Error:', error); // 오류 메시지를 콘솔에 출력
-    res.status(500).json({ message: '서버 오류로 인해 add_friend에 실패하였습니다.' });
+    res.status(500).json({ message: '서버 오류로 인해 Get_Following에 실패하였습니다.' });
   }  
 });
 

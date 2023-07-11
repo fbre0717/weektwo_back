@@ -27,9 +27,10 @@
 # content-type: application/json
 
 # {
-#   "userId": "build__gates",
+#   "userId": "BuildGates",
 #   "birth": "2002-06-17",
-#   "hobby": "Magic"
+#   "hobby": "Magic",
+#   "imageUrl": "imageurl"
 # }
 
 
@@ -133,9 +134,24 @@
 # }
 
 
-POST {{server}}show_all_write/
+# POST {{server}}show_all_write/
+# content-type: application/json
+
+# {
+#     "userId": "build_gates" 
+# }
+
+
+# POST {{server}}Get_Following/
+# content-type: application/json
+
+# {
+#     "userId": "AbraStone" 
+# }
+
+POST {{server}}Get_Followers/
 content-type: application/json
 
 {
-    "userId": "build_gates" 
+    "userId": "t1234" 
 }
