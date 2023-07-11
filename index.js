@@ -82,7 +82,7 @@ app.post('/signup', async (req, res) => {
         userId: req.body.userId,
         birth: "none",
         hobby: "none",
-        imageUrl: "none",
+        imageUrl: "https://via.placeholder.com/300",
         username:"none"
       });
       await newProfile.save();
@@ -120,7 +120,7 @@ app.post('/kakao_signup', async (req, res) => {
         userId: req.body.userId,
         birth: "none",
         hobby: "none",
-        imageUrl: "none",
+        imageUrl: "https://via.placeholder.com/300",
         username:"none"
       });
       await newProfile.save();
