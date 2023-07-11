@@ -25,11 +25,52 @@
 
 
 
-POST {{server}}signup/
+# POST {{server}}signup/
+# content-type: application/json
+
+# {
+#     "username": "Seonkyu",
+#     "userId" : "build__gates11",
+#     "password" : "Qweasd123" 
+# }
+
+
+# POST {{server}}modify_profile/
+# content-type: application/json
+
+# {
+#     "userId": "build__gates",
+#     "type" : "hobby",
+#     "content": "Cube" 
+# }
+
+POST {{server}}modify_profile/
 content-type: application/json
 
 {
-    "username": "Seonkyu",
-    "userId" : "build__gates9",
-    "password" : "Qweasd123" 
+    "userId": "build__gates",
+    "type" : "birth",
+    "content": "2002-01-01" 
 }
+
+# POST {{server}}modify_text/
+# content-type: application/json
+
+# {
+#     "title": "sfsdfd",
+#     "content": "와우와옹ㅁㅇㄴㅇ" 
+# }
+
+# POST {{server}}delete_text/
+# content-type: application/json
+
+# {
+#     "title": "etstd" 
+# }
+
+# POST {{server}}delete_profile/
+# content-type: application/json
+
+# {
+#     "userId": "build__gates11" 
+# }

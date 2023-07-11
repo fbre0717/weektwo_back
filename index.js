@@ -71,8 +71,8 @@ app.post('/signup', async (req, res) => {
     if (existingUser) {
       res.status(400).json({ message: '!!!!!!이미 존재하는 userId!!!!!' });
     } else {
-      //const user = new User(req.body);
-      //await user.save();
+      const user = new User(req.body);
+      await user.save();
       const newProfile = new Profile({
         userId: req.body.userId,
         birth: "none",
@@ -151,6 +151,86 @@ app.post('/show_profile', async (req, res) => {
   } catch (error) {
     console.error('Error:', error); // 오류 메시지를 콘솔에 출력
     res.status(500).json({ message: '서버 오류로 인해 show_profile에 실패하였습니다.' });
+  }
+});
+
+app.post('/modify_profile', async (req, res) => {
+  // "userId": "build__gates",
+  //   "type" : "hobby",
+  //   "content": "2002-06-17"
+  // 같은 형식으로 req
+  // type은 "hobby" 이거나 "birth" 둘 중에 하나. 이외에는 수정하지 않고 무시.
+  try {
+    // 같은 userId 있나 확인
+    const t = await Profile.findOne({ userId: req.body.userId });
+
+    if (t) {
+      if (req.body.type == "hobby") {
+        if (t.hobby == req.body.content) {
+          res.status(200).json({ message: 'hobby 수정 내용이 기존의 내용과 같습니다' });    
+        } else {
+          res.status(200).json({ message: 'hobby 수정이 정상적으로 완료되었습니다' });
+          t.hobby = req.body.content;
+          await t.save();
+        }
+      } else if (req.body.type == "birth") {
+        if (t.birth == req.body.content) {
+          res.status(200).json({ message: 'birth 수정 내용이 기존의 내용과 같습니다' });    
+        } else {
+          res.status(200).json({ message: 'birth 수정이 정상적으로 완료되었습니다' });
+          t.birth = req.body.content;
+          await t.save();
+        }
+      } else {
+        res.status(400).json({ message: '그런 type이 없어 수정이 되지 않았습니다' });
+      }
+      
+      
+    } else {
+      res.status(400).json({ message: "user_id 가 같은 유저가 없습니다" });
+    }
+    
+  } catch (error) {
+    console.error('Error:', error); // 오류 메시지를 콘솔에 출력
+    res.status(500).json({ message: '서버 오류로 인해 show_profile에 실패하였습니다.' });
+  }
+});
+
+app.post('/delete_text', async (req, res) => {
+  // "title": 삭제하고자 하는 게시글의 title,
+  try {
+    // 같은 title 있나 확인
+    
+    const result = await Text.deleteOne({ title: req.body.title });
+
+    if (result.deletedCount > 0) {
+      res.status(200).json({ message: '게시글이 성공적으로 삭제되었습니다.' });
+    } else {
+      res.status(400).json({ message: '일치하는 게시글을 찾을 수 없습니다.' });
+    }
+    
+  } catch (error) {
+    console.error('Error:', error); // 오류 메시지를 콘솔에 출력
+    res.status(500).json({ message: '서버 오류로 인해 delete_text에 실패하였습니다.' });
+  }
+});
+
+app.post('/delete_profile', async (req, res) => {
+  // "userId": 삭제하고자 하는 프로필의 userId,
+  try {
+    // 같은 userId 있나 확인
+    
+    const result = await Profile.deleteOne({ userId: req.body.userId });
+
+    if (result.deletedCount > 0) {
+      res.status(200).json({ message: '프로필이 성공적으로 삭제되었습니다.' });
+    } else {
+      res.status(400).json({ message: '일치하는 프로필을 찾을 수 없습니다.' });
+    }
+    
+  } catch (error) {
+    console.error('Error:', error); // 오류 메시지를 콘솔에 출력
+    res.status(500).json({ message: '서버 오류로 인해 delete_profile에 실패하였습니다.' });
   }
 });
 
