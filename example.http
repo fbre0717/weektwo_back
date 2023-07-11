@@ -23,14 +23,13 @@
 #     "userId": "build__gates" 
 # }
 
-# POST {{server}}add_profile/
+# POST {{server}}signup/
 # content-type: application/json
 
 # {
-#   "userId": "BuildGates",
-#   "birth": "2002-06-17",
-#   "hobby": "Magic",
-#   "imageUrl": "imageurl"
+#   "userId": "test12345",
+#   "password":"1234",
+#    "username" : "DgitalKaimera"
 # }
 
 
@@ -54,14 +53,14 @@
 #     "content": "Cube" 
 # }
 
-# POST {{server}}modify_profile/
-# content-type: application/json
+POST {{server}}modify_profile/
+content-type: application/json
 
-# {
-#     "userId": "build__gates",
-#     "type" : "birth",
-#     "content": "2002-01-01" 
-# }
+{
+    "userId": "test12345",
+    "type" : "username",
+    "content": "KING" 
+}
 
 # POST {{server}}modify_text/
 # content-type: application/json
@@ -156,9 +155,9 @@
 #     "userId": "mom" 
 # }
 
-POST {{server}}kakao_signup/
-content-type: application/json
+# POST {{server}}kakao_signup/
+# content-type: application/json
 
-{
-    "userId": "icp1481" 
-}
+# {
+#     "userId": "icp1481" 
+# }

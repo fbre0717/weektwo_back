@@ -37,7 +37,8 @@ const ProfileSchema = new mongoose.Schema({
   userId: String,
   birth: String,
   hobby: String,
-  imageUrl: String
+  imageUrl: String,
+  username: String
 });
 
 const Profile = mongoose.model('profile', ProfileSchema);
@@ -81,7 +82,8 @@ app.post('/signup', async (req, res) => {
         userId: req.body.userId,
         birth: "none",
         hobby: "none",
-        imageUrl: "none"
+        imageUrl: "none",
+        username:"none"
       });
       await newProfile.save();
       const friendData = {
@@ -118,7 +120,8 @@ app.post('/kakao_signup', async (req, res) => {
         userId: req.body.userId,
         birth: "none",
         hobby: "none",
-        imageUrl: "none"
+        imageUrl: "none",
+        username:"none"
       });
       await newProfile.save();
       const friendData = {
@@ -238,6 +241,14 @@ app.post('/modify_profile', async (req, res) => {
         } else {
           res.status(200).json({ message: 'imageUrl 수정이 정상적으로 완료되었습니다' });
           t.imageUrl = req.body.content;
+          await t.save();
+        }
+      } else if (req.body.type == "username") {
+        if (t.username == req.body.content) {
+          res.status(200).json({ message: 'username 수정 내용이 기존의 내용과 같습니다' });    
+        } else {
+          res.status(200).json({ message: 'username 수정이 정상적으로 완료되었습니다' });
+          t.username = req.body.content;
           await t.save();
         }
       } else {
@@ -409,7 +420,7 @@ app.post('/show_all_write', async (req, res) => {
     // userId : ""
     // 모든 데이터를 다 json으로 전달
     const allData = await Text.find({userId: req.body.userId}); // Text 모델의 모든 데이터 조회
-    res.status(200).json({allData});
+    res.status(200).json(allData);
 
   } catch (error) {
     console.error('Error:', error); // 오류 메시지를 콘솔에 출력
