@@ -105,7 +105,10 @@ app.post('/signup', async (req, res) => {
 
 app.post('/kakao_signup', async (req, res) => {
 // req :
-//   userId
+//   {userId : "",
+//    username: "",
+//    birth: "",
+//    imageUrl:"" }
 
 // res :
 //   Case1: 유저가 이미 존재하는 경우 -> { message: '!!!!!!이미 존재하는 userId!!!!!' }
@@ -126,9 +129,9 @@ app.post('/kakao_signup', async (req, res) => {
       await user.save();
       const newProfile = new Profile({
         userId: req.body.userId,
-        birth: "none",
+        birth: req.body.birth,
         hobby: "none",
-        imageUrl: "https://via.placeholder.com/300",
+        imageUrl: "none",
         username:"none"
       });
       await newProfile.save();

@@ -114,17 +114,14 @@
 #     "what" : "의미없는 내용"
 # }
 
-# POST {{server}}add_friend/
-# content-type: application/json
+POST {{server}}add_friend/
+content-type: application/json
 
-# {
-#     "userId": "AbraStone",
-#     "follow" : "Util"
+{
+    "userId": "AbraStone",
+    "follow" : "Util"
 
-# }
-
-# POST {{server}}add_friend/
-# content-type: application/json
+}
 
 # {
 #     "userId": "AbraStone",
@@ -167,9 +164,9 @@
 POST {{server}}kakao_signup/
 content-type: application/json
 
-{
-    "userId": "ddgger617" 
-}
+# {
+#     "userId": "icp1481" 
+# }
 
 
 # POST {{server}}show_all_friend/
