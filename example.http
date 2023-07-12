@@ -100,9 +100,9 @@
 # content-type: application/json
 
 # {
-#     "userId": "build__gates12",
+#     "userId": "Ace",
 #     "type" : "password",
-#     "what" : "sk1445adfd"
+#     "what" : "sfkjdfcerbnfd"
 # }
 
 # POST {{server}}modify_text/
@@ -114,16 +114,23 @@
 #     "what" : "의미없는 내용"
 # }
 
-POST {{server}}add_friend/
-content-type: application/json
+# POST {{server}}add_friend/
+# content-type: application/json
 
-{
-    "userId": "AbraStone",
-    "follow" : "Util"
+# {
+#     "userId": "AbraStone",
+#     "follow" : "Util"
 
-}
+# }
 
+# POST {{server}}add_friend/
+# content-type: application/json
 
+# {
+#     "userId": "AbraStone",
+#     "follow" : "Util"
+
+# }
 
 # POST {{server}}signup/
 # content-type: application/json
@@ -157,12 +164,12 @@ content-type: application/json
 #     "userId": "mom" 
 # }
 
-# POST {{server}}kakao_signup/
-# content-type: application/json
+POST {{server}}kakao_signup/
+content-type: application/json
 
-# {
-#     "userId": "icp1481" 
-# }
+{
+    "userId": "ddgger617" 
+}
 
 
 # POST {{server}}show_all_friend/
@@ -179,4 +186,15 @@ content-type: application/json
 #     "userId": "AbraStone2",
 #     "follow" : "Blakpink"
 # //"follow" : "t1234"
+# }
+
+# POST {{server}}add_profile/
+# content-type: application/json
+
+# {
+#     "userId": "testId",
+#   "birth": "2000-01-01",
+#   "hobby": "Coding",
+#   "imageUrl": "none",
+#   "username": "test_user"
 # }
