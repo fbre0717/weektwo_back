@@ -415,6 +415,7 @@ app.post('/add_profile', async (req, res) => {
   }
 });
 
+
 app.post('/show_all_write', async (req, res) => {
   try {
     // userId : ""
@@ -422,6 +423,31 @@ app.post('/show_all_write', async (req, res) => {
     const allData = await Text.find({userId: req.body.userId}); // Text 모델의 모든 데이터 조회
     res.status(200).json(allData);
 
+  } catch (error) {
+    console.error('Error:', error); // 오류 메시지를 콘솔에 출력
+    res.status(500).json({ message: '서버 오류로 인해 shaw_all_write에 실패하였습니다.' });
+  }
+});
+
+app.post('/show_all_friend', async (req, res) => {
+  try {
+    // userId : ""
+    const re = await Friend.findOne({ userId: req.body.userId });
+    const results = [];
+    if (re) {
+      for (let i = 0; i < re.friendList.length; i++) {
+        const t = re.friendList[i];
+        const t2 = await Profile.findOne({ userId: t});
+        if (t2) {
+          const { userId, imageUrl, username } = t2;
+          results.push({ userId, imageUrl, username });
+        }
+      }
+      res.status(200).json(results);
+    } else {
+      res.status(404).json({ message: '존재하지 않는 userId입니다.' });
+    }
+    
   } catch (error) {
     console.error('Error:', error); // 오류 메시지를 콘솔에 출력
     res.status(500).json({ message: '서버 오류로 인해 shaw_all_write에 실패하였습니다.' });
