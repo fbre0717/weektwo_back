@@ -496,11 +496,15 @@ app.post('/add_friend', async (req, res) => {
     if (t) {
       const t2 = await Friend.findOne({ userId: req.body.follow });
       if (t2) {
-        t.friendList.push(req.body.follow); // req.body.follow를 friendList에 추가
-        await t.save(); // 변경된 friend 저장
-        res.status(200).json({ message: '친구 추가가 완료되었습니다.' });
-        const val = MapCount.get(req.body.follow) + 1;
-        MapCount.set(req.body.follow, val);
+        if (t.friendList.includes(req.body.follow)) {
+          res.status(400).json({ message: '이미 친구 리스트에 있는 친구입니다.' });
+        } else {
+          t.friendList.push(req.body.follow); // req.body.follow를 friendList에 추가
+          await t.save(); // 변경된 friend 저장
+          res.status(200).json({ message: '친구 추가가 완료되었습니다.' });
+          const val = MapCount.get(req.body.follow) + 1;
+          MapCount.set(req.body.follow, val);
+        }
       } else {
         res.status(400).json({ message: '추가하려는 user_id가 없어 친구 추가 실패' });
       }
