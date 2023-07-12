@@ -83,7 +83,7 @@ app.post('/signup', async (req, res) => {
         birth: "none",
         hobby: "none",
         imageUrl: "https://via.placeholder.com/300",
-        username: req.body.username
+        username:req.body.username
       });
       await newProfile.save();
       const friendData = {
@@ -105,7 +105,10 @@ app.post('/signup', async (req, res) => {
 
 app.post('/kakao_signup', async (req, res) => {
 // req :
-//   userId
+//   {userId : "",
+//    username: "",
+//    birth: "",
+//    imageUrl:"" }
 
 // res :
 //   Case1: 유저가 이미 존재하는 경우 -> { message: '!!!!!!이미 존재하는 userId!!!!!' }
@@ -126,10 +129,10 @@ app.post('/kakao_signup', async (req, res) => {
       await user.save();
       const newProfile = new Profile({
         userId: req.body.userId,
-        birth: "none",
+        birth: req.body.birth,
         hobby: "none",
-        imageUrl: "none",
-        username:"none"
+        imageUrl: req.body.imageUrl,
+        username: req.body.username
       });
       await newProfile.save();
       const friendData = {
@@ -240,9 +243,10 @@ app.post('/show_profile', async (req, res) => {
 });
 
 app.post('/modify_profile', async (req, res) => {
-  // "userId": "build__gates",
-  //   "type" : "hobby",
-  //   "content": "2002-06-17"
+  // req (예시):
+    // "userId": "build__gates",
+    //   "type" : "hobby",
+    //   "content": "2002-06-17"
   // 같은 형식으로 req
   // type은 "hobby" 이거나 "birth" , "imageUrl" 셋 중에 하나. 이외에는 수정하지 않고 무시.
   try {
@@ -298,10 +302,35 @@ app.post('/modify_profile', async (req, res) => {
 });
 
 app.post('/modify_user', async (req, res) => {
-  // "userId": "",
-  // "type" : "userId" 또는 'username' 또는 'password' 바꾸려는 것
-  //   "what": 바꾸려는 내용
-  // 같은 형식으로 req
+  // req :
+    // "userId": "",
+    // "type" : 'username' 또는 'password' 
+    //   "what": 바꾸려는 내용
+
+    // 예시 :
+  //   {
+  //     "userId": "Ace",
+  //     "type" : "password",
+  //     "what" : "sfkjdfcerbnfd"
+  //    }
+  // 
+
+  //res  : 
+  // 0)	변경하려는 userId가 user스키마에 없는 경우
+  //  { message: '그런 userId가 없어 수정을 할 수 없습니다' }
+  // 1)	type이 “username” 인 경우
+    // C1. 변경하려는 내용이 기존과 똑같은 경우
+  // 	{ message: 'username 수정하려는 내용이 기존의 내용과 같습니다' }
+  //   C2. 정상
+  // 	{ message: 'username 수정이 정상적으로 완료되었습니다' }
+  // 2)	type이 “password” 인 경우
+    // C1. 변경하려는 내용이 기존과 똑같은 경우
+  // 	{ message: 'password 수정하려는 내용이 기존의 내용과 같습니다' }
+  //   C2. 정상
+  // 	{ message: 'password 수정이 정상적으로 완료되었습니다' }
+  // 3)	Type이 위 두 개 이외의 것이 나온 경우
+  // 	{ message: '그런 type이 없어 수정이 되지 않았습니다' }
+    
   try {
     // 같은 userId 있나 확인
 
@@ -322,7 +351,7 @@ app.post('/modify_user', async (req, res) => {
       const t = await User.findOne({userId : req.body.userId });
       if (t) {
         if (t.password == req.body.what) {
-          res.status(400).json({ message: 'password 수정 내용이 기존의 내용과 같습니다' });    
+          res.status(400).json({ message: 'password 수정하려는 내용이 기존의 내용과 같습니다' });    
         } else {
           res.status(200).json({ message: 'password 수정이 정상적으로 완료되었습니다' });
           t.password = req.body.what;
@@ -342,11 +371,35 @@ app.post('/modify_user', async (req, res) => {
 });
 
 app.post('/modify_text', async (req, res) => {
-  // userId : "" 
-  // "title": "",
-  // "type" : "title" 또는 'content' 바꾸려는 것
-  //   "what": 바꾸려는 내용
-  // 같은 형식으로 req
+  //req
+    // userId : "" 
+    // "title": "",
+    // "type" : "title" 또는 'content'. 둘 중에 바꾸려는 것
+    // "what": 바꾸려는 내용
+    // 
+//  예시
+  //   {
+  //     "title": "없는 제목",
+  //     "type" : "content",
+  //     "what" : "의미없는 내용"
+  //   }
+
+//res
+// 0)	변경하려는 title이 Text스키마에 없는 경우
+  //  { message: '그런 title이 없어 수정을 할 수 없습니다' }
+// 1)	type이 “title” 인 경우
+   // C1. 변경하려는 내용이 기존과 똑같은 경우
+  // 	{ message: 'title 수정하려는 내용이 기존의 내용과 같습니다' }	
+  // 	C2. 정상
+  // 	{ message: 'title 수정이 정상적으로 완료되었습니다'}
+// 2)	type이 “content” 인 경우
+   // C1. 변경하려는 내용이 기존과 똑같은 경우
+  // 	{ message: content 수정 내용이 기존의 내용과 같습니다' }
+  // 	C2. 정상
+  // 	{ message: 'content 수정이 정상적으로 완료되었습니다' }
+// 3)	Type이 위 두 개 이외의 것이 나온 경우
+// 	{ message: ' 그런 type이 없어 수정이 되지 않았습니다' }
+
   try {
     // 같은 userId 있나 확인
 
@@ -426,7 +479,22 @@ app.post('/delete_profile', async (req, res) => {
 });
 
 app.post('/add_profile', async (req, res) => {
-  
+//req예시
+//   {
+//    "userId": "testId",
+//   "birth": "2000-01-01",
+//   "hobby": "Coding",
+//   "imageUrl": "none",
+//   "username": "test_user"
+//  }
+
+// res :
+// 1) userId가 이미 같은 것이 있는 경우
+// --> { message: '같은 userId를 갖는 유저가 이미 있습니다' }
+// 2) 정상
+// --> { message: "유저를 추가했습니다" }
+// 3) 예외
+// --> { message: '서버 오류로 인해 add_profile에 실패하였습니다.' }
   try {
     const t = await Profile.findOne({ userId: req.body.userId });
 
@@ -442,7 +510,7 @@ app.post('/add_profile', async (req, res) => {
     
   } catch (error) {
     console.error('Error:', error); // 오류 메시지를 콘솔에 출력
-    res.status(500).json({ message: '서버 오류로 인해 show_profile에 실패하였습니다.' });
+    res.status(500).json({ message: '서버 오류로 인해 add_profile에 실패하였습니다.' });
   }
 });
 
@@ -517,7 +585,7 @@ app.post('/add_friend', async (req, res) => {
   }
 });
 
-// 수정 예정
+// 수정 예정 기능 : 팔로워 수 구하는
 app.post('/Get_Followers', async (req, res) => {
   try {
     //res.json(MapCount.size);
@@ -538,6 +606,7 @@ app.post('/Get_Followers', async (req, res) => {
   }  
 });
 
+// 팔로잉 수 구하는
 app.post('/Get_Following', async (req, res) => {
   try {
     const t = await Friend.findOne({ userId: req.body.userId });
