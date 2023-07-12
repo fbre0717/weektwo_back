@@ -176,6 +176,16 @@ app.post('/signin', async (req, res) => {
 
 app.post('/write', async (req, res) => {
   
+  // req (예시): 
+  //    {"userId" : "build_gates",
+  //     "title": "7월 12일 일기2",
+  //     "content" : "한게 없다 하..2" }
+  // res :
+  //   Case1: 이미 같은 유저가 같은 제목의 게시글을 작성한 경우 
+  //    { message: '이미 같은 제목의 게시글이 있습니다.' } 
+  //   Case2 : 정상  { message: "일기를 작성!" }
+  //   Case3 : 예외  { message: '서버 오류로 인해 write에 실패하였습니다.' }
+  
   try {
     // 요청된 title로 사용자 찾기
     const t = await Text.findOne({ title: req.body.title, userId: req.body.userId });
@@ -198,6 +208,19 @@ app.post('/write', async (req, res) => {
 });
 
 app.post('/show_profile', async (req, res) => {
+  // req (예시) :
+  //    { "userId": "test12345" }
+
+  // res (예시) : 
+  //     { "_id": "64ad966cb8b6692021775ee2",
+  //     "userId": "test12345",
+  //     "birth": "none",
+  //     "hobby": "none",
+  //     "imageUrl": "none",
+  //     "username": "KING",
+  //     "__v": 0  
+  //     }
+
   
   try {
     const t = await Profile.findOne({ userId: req.body.userId });

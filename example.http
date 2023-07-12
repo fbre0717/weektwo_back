@@ -44,14 +44,14 @@
 # }
 
 
-# POST {{server}}modify_profile/
-# content-type: application/json
+POST {{server}}modify_profile/
+content-type: application/json
 
-# {
-#     "userId": "build__gates",
-#     "type" : "hobby",
-#     "content": "Cube" 
-# }
+{
+    "userId": "build__gates",
+    "type" : "hobby",
+    "content": "Cube" 
+}
 
 # POST {{server}}modify_profile/
 # content-type: application/json
@@ -171,11 +171,11 @@
 #     "userId": "AbraStone" 
 # }
 
-POST {{server}}add_friend/
-content-type: application/json
+# POST {{server}}add_friend/
+# content-type: application/json
 
-{
-    "userId": "AbraStone2",
-    "follow" : "Blakpink"
-//"follow" : "t1234"
-}
+# {
+#     "userId": "AbraStone2",
+#     "follow" : "Blakpink"
+# //"follow" : "t1234"
+# }
