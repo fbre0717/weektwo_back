@@ -7,7 +7,7 @@
 ##### 0. 회원가입/로그인
 - 카카오톡 로그인, 일반 로그인 기능
 <p align="center">
-https://github.com/fbre0717/weektwo_back/assets/82937664/7394d5ae-7a7d-4322-9fcd-d862503f0c4e
+  <img src= https://github.com/fbre0717/weektwo_back/assets/82937664/7394d5ae-7a7d-4322-9fcd-d862503f0c4e>
 </p>
 
 ##### 탭1. /프로필 기능
