@@ -131,8 +131,8 @@ app.post('/kakao_signup', async (req, res) => {
         userId: req.body.userId,
         birth: req.body.birth,
         hobby: "none",
-        imageUrl: "none",
-        username:"none"
+        imageUrl: req.body.imageUrl,
+        username: req.body.username
       });
       await newProfile.save();
       const friendData = {
