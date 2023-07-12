@@ -4,9 +4,16 @@
 
 ### 기능
 
-##### 탭1. 프로필 기능
+##### 0. 회원가입/로그인
 - 카카오톡 로그인, 일반 로그인 기능
+<p align="center">
+https://github.com/fbre0717/weektwo_back/assets/82937664/7394d5ae-7a7d-4322-9fcd-d862503f0c4e
+</p>
+
+##### 탭1. /프로필 기능
+
 - 프로필 사진, 이름, 생일, 취미에 대한 정보 표기
+
 <p align="center">
   <img src= "https://github.com/fbre0717/weektwo_back/assets/82937664/396a6f1c-ff19-4bac-858c-dbf1b20f5c52">
 </p>
