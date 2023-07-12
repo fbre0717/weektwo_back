@@ -2,6 +2,9 @@
 
 ## 권오현, 이선규
 
+프론트 링크: 
+https://github.com/fbre0717/weektwo_front/upload/main
+
 ### 기능
 
 ##### 0. 회원가입/로그인
