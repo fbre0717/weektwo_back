@@ -104,6 +104,14 @@ app.post('/signup', async (req, res) => {
 });
 
 app.post('/kakao_signup', async (req, res) => {
+// req :
+//   userId
+
+// res :
+//   Case1: 유저가 이미 존재하는 경우 -> { message: '!!!!!!이미 존재하는 userId!!!!!' }
+//   Case2: 유저가 잘 추가된 경우 --> { message: '회원 가입에 성공!' }
+//   Case3: 그 외 오류 --> { message: '서버 오류로 인해 회원 가입에 실패하였습니다.' }
+
   try {
     const existingUser = await User.findOne({ userId: req.body.userId });
 
@@ -461,12 +469,18 @@ app.post('/add_friend', async (req, res) => {
 
   try {
     const t = await Friend.findOne({ userId: req.body.userId });
+    
     if (t) {
-      t.friendList.push(req.body.follow); // req.body.follow를 friendList에 추가
-      await t.save(); // 변경된 friend 저장
-      res.status(200).json({ message: '친구 추가가 완료되었습니다.' });
-      const val = MapCount.get(req.body.follow) + 1;
-      MapCount.set(req.body.follow, val);
+      const t2 = await Friend.findOne({ userId: req.body.follow });
+      if (t2) {
+        t.friendList.push(req.body.follow); // req.body.follow를 friendList에 추가
+        await t.save(); // 변경된 friend 저장
+        res.status(200).json({ message: '친구 추가가 완료되었습니다.' });
+        const val = MapCount.get(req.body.follow) + 1;
+        MapCount.set(req.body.follow, val);
+      } else {
+        res.status(400).json({ message: '추가하려는 user_id가 없어 친구 추가 실패' });
+      }
     } else {
       res.status(400).json({ message: '그런 user_id가 없습니다' });
     }

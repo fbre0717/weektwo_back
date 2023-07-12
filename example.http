@@ -164,9 +164,18 @@
 # }
 
 
-POST {{server}}show_all_friend/
+# POST {{server}}show_all_friend/
+# content-type: application/json
+
+# {
+#     "userId": "AbraStone" 
+# }
+
+POST {{server}}add_friend/
 content-type: application/json
 
 {
-    "userId": "AbraStone" 
+    "userId": "AbraStone2",
+    "follow" : "Blakpink"
+//"follow" : "t1234"
 }
